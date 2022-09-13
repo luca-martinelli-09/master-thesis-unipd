@@ -22,6 +22,7 @@ Although there are different definitions of "ontology" \cite{taye2010understandi
 
 Along with ontologies, controlled vocabularies, taxonomies, and thesauri are other resources used in different domains, in particular the medical one \cite{ivanovic2014overview}. A controlled vocabulary is a closed list of named subjects, called \textit{terms}, which is usually used for classification. A taxonomy is a subject-based classification that organizes terms in a controlled vocabulary into a hierarchy. Finally, a thesaurus extends taxonomies, allowing making other statements about the subjects and providing a much richer vocabulary \cite{ivanovic2014overview}.
 
+\paragraph*{}
 In 2006, Tim Berners-Lee used for the first time the term Linked Data to describe the structured and interlinked data that populate the Semantic Web \cite{berners2006linked}. He also introduced a set of rules, also known as the Linked Data Principles, to provide some best practices for publishing and connecting data on the Web \cite{bizer2011linked}. These principles, published by \ac{W3C}, are the following:
 
 \begin{enumerate}
@@ -75,7 +76,7 @@ However, as the information receives a greater number of stars, both the benefit
 \section{RDF, OWL, and serialization formats}
 \label{sec:rdf-owl-formats}
 
-The \acf{RDF} is a \ac{W3C} graph-based standard model to represent information about resources on the Web (including documents, people, physical objects, and abstract concepts). Using \ac{RDF}, machines can process information on the Web using common parsers and processing tools, and information can be exchanged between different applications without losing meaning \cite{world2014rdfprimer}. In particular, in recent years \ac{RDF} has become the \textit{de-facto} standard for publishing Linked Data on the Web. The core structure of the \ac{RDF} syntax is a set of statements, called \textit{triples}, because they consist of three elements: a \textit{subject}, a \textit{predicate}, and an \textit{object}, following the structure \verb#<subject> <predicate> <object>#, which can be visually represented in Fig. \ref{fig:rdf-graph-structure}.
+The \acf{RDF} is a \ac{W3C} graph-based standard model to represent information about resources on the Web (including documents, people, physical objects, and abstract concepts). Using \ac{RDF}, machines can process information on the Web using common parsers and processing tools, and information can be exchanged between different applications without losing meaning \cite{world2014rdfprimer}. In particular, in recent years \ac{RDF} has become the \textit{de-facto} standard for publishing Linked Data on the Web. The core structure of the \ac{RDF} syntax is a set of statements, called \textit{triples}, because they consist of three elements: a \textit{subject}, a \textit{predicate}, and an \textit{object}, following the structure \verb#<subject> <predicate> <object>#, which can be visually represented in Fig. \ref{fig:rdf-graph-structure} \cite{world2014rdfconcepts}.
 
 \begin{figure}[!ht]
     \centering
@@ -84,7 +85,7 @@ The \acf{RDF} is a \ac{W3C} graph-based standard model to represent information 
     \label{fig:rdf-graph-structure}
 \end{figure}
 
-The subject and the object represent the two resources being related. The relationship that goes from the subject to the object is called \textit{property} and it's nature is represented by the predicate. A set of statements generate a direct graph, called RDF graph, where subjects and objects are the nodes of the graph, and the predicates form the arcs. For example, the set of triples below produces the graph shown in Fig. \ref{fig:rdf-graph-examle}.
+The subject and the object represent the two resources being related. The relationship that goes from the subject to the object is called \textit{property} and it's nature is represented by the predicate. A set of statements generate a direct graph, called RDF graph, where subjects and objects are the nodes of the graph, and the predicates form the arcs. For example, the set of triples below produces the graph shown in Fig. \ref{fig:rdf-graph-examle} \cite{world2014rdfprimer}.
 
 \begin{verbatim}
 <Bob> <is a> <person>.
@@ -102,7 +103,14 @@ The subject and the object represent the two resources being related. The relati
     \label{fig:rdf-graph-examle}
 \end{figure}
 
-In an \ac{RDF} graph, resources may be represented using an \acp{IRI}, a \textit{literal value} or a \textit{blank node}.
+In an \ac{RDF} graph, resources may be represented using an \ac{IRI}, a \textit{literal value} or a \textit{blank node}. An \ac{IRI} is a generalization of \ac{URI}, where non-\acs{ASCII} characters are allowed in the \ac{IRI} character string. \acp{IRI} identify resources, and can appear in all three positions of a triple. In the example above, the \ac{IRI} for Leonardo Da Vinci in DBpedia\footnote{\url{https://www.dbpedia.org/}} is \url{http://dbpedia.org/resource/Leonardo_da_Vinci}.
+
+Literals are basic values such as strings, dates, and numbers. In the \ac{RDF} graph literals can only be used as objects, and consists of two or three elements, which are: (1) the value itself; (2) an \ac{IRI} that identifies the \textit{datatype} (string, number, date, etc.); (3) if and only if the datatype is a \texttt{rdf:langString},\footnote{\url{http://www.w3.org/1999/02/22-rdf-syntax-ns\#langString}} a \textit{language tag} (such as \texttt{en}, \texttt{it}, \texttt{fr}, etc.) \cite{world2014rdfconcepts}.
+
+Finally, blank nodes can appear in the subject and object position of a triple and are used to represent resources without using an \ac{IRI} \cite{world2014rdfprimer}.
+
+\paragraph*{}
+In Sec. \ref{sec:web-of-data} ontologies are presented as a core element for creating the Web of Data.
 
 %% sparql
 
