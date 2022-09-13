@@ -1,0 +1,53 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+% !TEX root = ./main.tex
+
+% Load Thesis Class
+\documentclass{DEIThesis}
+
+\title{Open Data for Italian Municipalities: \\ Ontology, Data and WebApps}
+
+\author{Luca Martinelli}
+\studentId{2005837}
+
+% Advisor
+\advisor{Prof. Gianmaria Silvello}
+
+% If you are co-advised
+\coadvisor{}
+\coadvisorsUniversity{}
+
+\university{University of Padova}
+\mastername{Computer Engineering}
+\academicYear{2021/2022}
+
+\begin{filecontents*}[overwrite]{\jobname.xmpdata}
+    \Title{Open Data for Italian Municipalities: Ontology, Data and WebApps}
+    \Author{Luca Martinelli}
+    \Language{en-EN}
+    \Keywords{Computer Engineering\sep Linked Open Data\sep Open Data\sep Public Administration\sep Municipalities\sep Ontology\sep RDF\sep OWL}
+\end{filecontents*}
+
+% Document
+
+\begin{document}
+    % The front matter (Cover, ToC, Abstract, etc...)
+    \frontmatter
+
+    % The main content
+    \mainmatter
+    
+    \include{chapters/01_introduction}
+    % obiettivi, contensti, importanza
+    \include{chapters/02_background} % lod, rdf, ontologia, protege, ONTOPIA
+    \include{chapters/03_releated_works} % PRELIMINARIES, % CITTA, comuni nel mondo
+    % Use case (Sona)
+    % Ontology
+    % Mappatura dei dati e pubblicazione
+    % App per la consultazione e servizi
+    \include{chapters/04_analysis}
+    \include{chapters/99_conclusions}
+    
+    % Bibliography, appendix, acknowledges, etc...
+    \backmatter
+\end{document}
