@@ -40,7 +40,6 @@
 \RequirePackage[english]{babel}
 
 
-
 % -- USEFUL PACKAGES --
 
 % spacings (\onehalfsize, \doublesize)
