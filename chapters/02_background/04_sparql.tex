@@ -1,7 +1,7 @@
 \section{SPARQL}
 \label{sec:sparql}
 
-\ac{SPARQL} is a query language developed by \ac{W3C} retrieve and manipulate \ac{RDF} graph content on the Web or in a \ac{RDF} store. A \ac{SPARQL} query contains a set of triple patterns called \textit{basic graph pattern}. These patterns are like \ac{RDF} triples except that subjects, predicates and objects may be replaced by variables. The basic graph pattern matches a sub-graph of the \ac{RDF} data and returns a new \ac{RDF} graph in which the variables are replaced with the matched data. Queries are usually processed by an \ac{HTTP} service, called \textit{\ac{SPARQL} endpoint}. \cite{world2013sparql}. The example below shows a \ac{SPARQL} query on DBpedia \ac{SPARQL} endpoint,\footnote{\url{https://dbpedia.org/sparql}} while Table \ref{tab:sparql-example} shows its result.
+\ac{SPARQL} is a query language developed by \ac{W3C} retrieve and manipulate \ac{RDF} graph content on the Web or in a \ac{RDF} store. A \ac{SPARQL} query contains a set of triple patterns called \textit{basic graph pattern}. These patterns are like \ac{RDF} triples except that subjects, predicates and objects may be replaced by variables. The basic graph pattern matches a subgraph of the \ac{RDF} data and returns a new \ac{RDF} graph in which the variables are replaced with the matched data. Queries are usually processed by an \ac{HTTP} service, called \textit{\ac{SPARQL} endpoint}. \cite{world2013sparql}. The example below shows a \ac{SPARQL} query on DBpedia \ac{SPARQL} endpoint,\footnote{\url{https://dbpedia.org/sparql}} while Table \ref{tab:sparql-example} shows its result.
 
 \begin{verbatim}
 PREFIX dbr: <http://dbpedia.org/page/>
@@ -27,8 +27,8 @@ SELECT ?relative ?name WHERE {
     \label{tab:sparql-example}
 \end{table}
 
-\ac{SPARQL} queries supports features like union of patterns, nesting queries, optional patterns or filtering values. Once the \ac{RDF} sub-graph is computed, it's also possible to modify it by ordering, limiting and grouping the values.
+\ac{SPARQL} queries supports features like union of patterns, nesting queries, optional patterns or filtering values. Once the \ac{RDF} subgraph is computed, it's also possible to modify it by ordering, limiting and grouping the values.
 
-Another important feature of \ac{SPARQL} is the possibility to perform federated queries, which explicitly delegates certain sub-queries to different \ac{SPARQL} endpoints, allowing to navigate through the Web of Data.
+Another important feature of \ac{SPARQL} is the possibility to perform federated queries, which explicitly delegates certain subqueries to different \ac{SPARQL} endpoints, allowing to navigate through the Web of Data.
 
 Finally, to return a more machine-readable form, \ac{SPARQL} supports four common exchange formats, which are: \ac{XML}, \ac{JSON}, \ac{CSV}, and \ac{TSV} \cite{world2013sparql}.

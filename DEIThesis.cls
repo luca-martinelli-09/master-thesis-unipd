@@ -267,28 +267,28 @@
   \cleardoublepage
 
   % insert list of figures
-  \phantomsection
-  \setcounter{page}{11}
+  %\phantomsection
+  %\setcounter{page}{11}
   \addcontentsline{toc}{chapter}{\listfigurename}
   \listoffigures
   \cleardoublepage
 
   % insert list of tables
-  \phantomsection
-  \setcounter{page}{13}
+  %\phantomsection
+  %\setcounter{page}{13}
   \addcontentsline{toc}{chapter}{\listtablename}
   \listoftables
   \cleardoublepage
 
   % insert list of algorithms
-  \phantomsection
-  \setcounter{page}{15}
+  %\phantomsection
+  %\setcounter{page}{15}
   \addcontentsline{toc}{chapter}{\listalgorithmname}
   \listofalgorithms
 
   % insert list of code snippets
-  \phantomsection
-  \setcounter{page}{17}
+  %\phantomsection
+  %\setcounter{page}{17}
   \addcontentsline{toc}{chapter}{\lstlistlistingname}
   \lstlistoflistings
   \cleardoublepage
