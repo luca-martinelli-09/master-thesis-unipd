@@ -1,0 +1,54 @@
+\section{The Web of Data}
+\label{sec:web-of-data}
+
+%% Semantic Web
+The World Wide Web was originally designed to be a space where documents are connected by links without semantic value, and most of these documents are designed for humans to read, not for machines to process. For this reason, Tim Berners-Lee in 2001 introduced the idea of the Semantic Web. In particular, the Semantic Web is an enhancement of the current Web that aims to create a web of data, in which information has a well-defined meaning and can be easily read and processed by programs \cite{berners2001semantic}.
+
+Due to this machine-comprehensible capacity, the Semantic Web has enormous potential to automate daily tasks in our lives and is helping to advance scientific and health care fields \cite{feigenbaum2007semantic}, such as drug discovery and clinical research, but also in the automotive industry, in the enhancement of cultural heritage, etc\dots.\footnote{\url{https://www.w3.org/2001/sw/sweo/public/UseCases/}} In this context, ontologies play a fundamental role in supporting interoperability and common understanding between different web applications and services, solving the problem of semantic heterogeneity \cite{taye2010understanding}.
+
+%% Ontology
+\paragraph*{}
+Although there are different definitions of "ontology" \cite{taye2010understanding}, in computer science, an ontology is defined as an "explicit and formal specification of a shared conceptualization" \cite{gruber1995toward}, where conceptualization means a simplified view of the world we wish to represent. An ontology is made up of four main types of components, which are (1) \textit{classes} (or \textit{concepts}), which describe concepts in the domain; (2) \textit{instances} of classes, which represent specific objects or elements of a class; (3) \textit{properties} (or \textit{slots}), which are used to express relationships between a first concept in the domain and a second concept in the range; (4) \textit{axioms} (or \textit{role restrictions}), which are used to impose constraints on the values of instances and classes \cite{taye2010understanding, noy2001ontology}. In addition to the interoperability problem, ontologies are also used to satisfy the following needs:
+
+\begin{itemize}
+    \item To share common understanding of the structure of information among people or software agents;
+    \item To enable reuse of domain knowledge;
+    \item To make domain assumptions explicit;
+    \item To separate domain knowledge from the operational knowledge
+    \item To analyze domain knowledge \cite{noy2001ontology}.
+\end{itemize}
+
+Along with ontologies, controlled vocabularies, taxonomies, and thesauri are other resources used in different domains, in particular the medical one \cite{ivanovic2014overview}. A controlled vocabulary is a closed list of named subjects, called \textit{terms}, which is usually used for classification. A taxonomy is a subject-based classification that organizes terms in a controlled vocabulary into a hierarchy. Finally, a thesaurus extends taxonomies, allowing making other statements about the subjects and providing a much richer vocabulary \cite{ivanovic2014overview}.
+
+%% Linked Data and Web of Data
+\paragraph*{}
+In 2006, Tim Berners-Lee used for the first time the term Linked Data to describe the structured and interlinked data that populate the Semantic Web \cite{berners2006linked}. He also introduced a set of rules, also known as the Linked Data Principles, to provide some best practices for publishing and connecting data on the Web \cite{bizer2011linked}. These principles, published by \ac{W3C}, are the following:
+
+\begin{enumerate}
+    \item Use \acsp{URI} as names for things;
+    \item Use \acs{HTTP} \acsp{URI} so that people can look up those names;
+    \item When someone looks up \acsp{URI}, provide useful information, using standards such as \acs{RDF} and \acs{SPARQL};
+    \item Include links to other \acsp{URI} so that they can discover more things.
+\end{enumerate}
+
+The two main fundamental technologies for Linked Data are \acp{URI} and \ac{HTTP}. In particular, \acp{URI} are used to identify any entity that exists in the world, while \ac{HTTP} provides a simple and universal mechanism for retrieving the resources to which they refer. These two technologies are integrated in \ac{RDF}, which provides a graph-based data model to structure and link data that describe entities in the world \cite{bizer2011linked}. Using \acp{HTTP}, \acp{URI}, and \ac{RDF}, Linked Data builds on the architecture of the Web, called the Web of Data. This means that the Web of Data shares many properties with the traditional Web, which are:
+
+\begin{itemize}
+    \item Web of Data can contain any type of data;
+    \item Anyone can publish data on the Web of Data;
+    \item Publishers are not restricted in the choice of vocabularies used to represent the data;
+    \item Entities are connected by \ac{RDF} links \cite{bizer2011linked}.
+\end{itemize}
+
+However, in addition to those of the traditional Web, the Web of Data also has the following characteristics:
+
+\begin{itemize}
+    \item Data are separated from formatting and presentational aspects;
+    \item Data is self-describing;
+    \item Data access is simplified by the use of the \ac{HTTP} and \ac{RDF} standards;
+    \item Web of Data is open, and new data sources can be discovered at run-time by following \ac{RDF} links \cite{bizer2011linked}.
+\end{itemize}
+
+%% Technology stack
+\paragraph*{}
+Semantic Web and Linked Data are empowered by technologies developed by the \acl{W3C} such as \acs{RDF}, \acs{OWL}, serialization formats (Section \ref{sec:rdf-owl-formats}), and \acs{SPARQL} (Section \ref{sec:sparql}).\footnote{\url{https://www.w3.org/2001/sw/wiki/Main_Page}}

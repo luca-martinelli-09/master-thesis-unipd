@@ -93,6 +93,8 @@
 ]{biblatex}
 \addbibresource{references.bib}
 
+%% imports
+\RequirePackage{import}
 
 
 % -- DEFINITIONS --

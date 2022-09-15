@@ -1,0 +1,22 @@
+\section{The five stars of Open Data}
+\label{sec:lod-stars}
+
+%% custom command for stars
+\definecolor{StarColor}{HTML}{FECD70}
+\newcommand{\Stars}[1]{\clone{#1}{\textcolor{StarColor}{\Large$\bigstar$}}}
+
+Linked Data does not have to be open and can be used internally, such as for personal data. When Linked Data is released under an open license that does not impede its reuse for free, such as Creative Commons CC-BY\footnote{\url{https://creativecommons.org/}} or the Italian Open Data License\footnote{\url{https://www.dati.gov.it/content/italian-open-data-license-v20}}, we can use the term \ac{LOD} \cite{berners2006linked}. In 2010 Tim Berners-Lee developed a star rating system to define and classify Linked Open Data, "in order to encourage people, especially government data owners, along the road to good linked data" \cite{berners2006linked}. The star rating system assigns a star if the information is publicly available under an open license, even if the information is a photo or an image scan of a table. The more stars the information gets, the easier it will be for people (and machines) to use it \cite{berners2006linked}.
+
+\begin{enumerate}[%
+align=right,
+leftmargin=*,
+labelindent=\widthof{\Stars{5}}
+]
+    \item[\Stars{1}] Available on the Web (any format) but with an open license to be Open Data
+    \item[\Stars{2}] Available as machine-readable structured data (e.g., Excel instead of an image scan of a table)
+    \item[\Stars{3}] Available in a non-proprietary format (e.g., \acs{CSV} instead of Excel)
+    \item[\Stars{4}] Use \acp{URI} to identify things, so that people can point at your stuff
+    \item[\Stars{5}] Data are linked to other people's data to provide context
+\end{enumerate}
+
+However, as the information receives a greater number of stars, both the benefits for consumers and the costs for the publisher increase. In particular, a five-stars data let consumers discover new data of interest, access to the data schema, reuse parts of the data, and link it to other places. They also do not have to pay for tools in order to read the data (e.g., Excel), and they can download and export the data into other formats and process them. On the other hand, to make these data available, publishers must invest time and resources in slicing and organizing the data, assigning \acp{URI} to the data items, thinking about how to represent them, linking the data with other data on the Web and making them discoverable \cite{bauer2011linked}.
