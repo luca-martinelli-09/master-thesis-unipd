@@ -1,7 +1,7 @@
 \section{SPARQL}
 \label{sec:sparql}
 
-\ac{SPARQL} is a query language developed by \ac{W3C} retrieve and manipulate \ac{RDF} graph content on the Web or in a \ac{RDF} store. A \ac{SPARQL} query contains a set of triple patterns called \textit{basic graph pattern}. These patterns are like \ac{RDF} triples except that subjects, predicates and objects may be replaced by variables. The basic graph pattern matches a subgraph of the \ac{RDF} data and returns a new \ac{RDF} graph in which the variables are replaced with the matched data. Queries are usually processed by an \ac{HTTP} service, called \textit{\ac{SPARQL} endpoint}. \cite{world2013sparql}. The example below shows a \ac{SPARQL} query on DBpedia \ac{SPARQL} endpoint,\footnote{\url{https://dbpedia.org/sparql}} while Table \ref{tab:sparql-example} shows its result.
+\ac{SPARQL} is a query language developed by \ac{W3C} retrieve and manipulate \ac{RDF} graph content on the Web or in an \ac{RDF} store. A \ac{SPARQL} query contains a set of triple patterns called \textit{basic graph pattern}. These patterns are like \ac{RDF} triples except that subjects, predicates and objects may be replaced by variables. The basic graph pattern matches a subgraph of the \ac{RDF} data and returns a new \ac{RDF} graph in which the variables are replaced with the matched data. Queries are usually processed by an \ac{HTTP} service, called \textit{\ac{SPARQL} endpoint}. \cite{world2013sparql}. The example below shows a \ac{SPARQL} query on DBpedia \ac{SPARQL} endpoint,\footnote{\url{https://dbpedia.org/sparql}} while Table \ref{tab:sparql-example} shows its result.
 
 \begin{verbatim}
 PREFIX dbr: <http://dbpedia.org/page/>
@@ -19,9 +19,9 @@ SELECT ?relative ?name WHERE {
     \begin{tabular}{|l|l|}
         \hline
         \multicolumn{1}{|c|}{\textbf{relative}} & \multicolumn{1}{c|}{\textbf{name}} \\ \hline
-        <http://dbpedia.org/resource/Dio\_Brando> & "Dio Brando"@en \\ \hline
-        <http://dbpedia.org/resource/Joseph\_Joestar> & "Joseph Joestar"@en \\ \hline
-        <http://dbpedia.org/resource/Jonathan\_Joestar> & "Jonathan Joestar"@en \\ \hline
+        \verb#dbr:Dio_Brando# & "Dio Brando"@en \\ \hline
+        \verb#dbr:Joseph_Joestar# & "Joseph Joestar"@en \\ \hline
+        \verb#dbr:Jonathan_Joestar# & "Jonathan Joestar"@en \\ \hline
     \end{tabular}
     \caption{A query result example from DBpedia.}
     \label{tab:sparql-example}

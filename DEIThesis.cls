@@ -132,6 +132,8 @@
 \repeat
 }
 
+\newcommand{\etc}{ect\dots}
+
 % -- LINKS SETUP --
 
 % set all links to black color
