@@ -30,14 +30,14 @@ There are many methods to insert an \ac{RDF} resource into the Virtuoso Quad Sto
 
   \item[RDF Sink Folder] WebDAV supports a special folder called \verb#rdf_sink#. This folder can be used to upload \ac{RDF} files from any WebDAV client, which are automatically uploaded to the Virtuoso Quad Store.
 
-  \item[\ac{HTTP} PUT] \ac{RDF} files can be uploaded to a \verb#rdf_sink# folder through the \ac{HTTP} PUT method. An example using cURL can be:
+  \item[\ac{HTTP} PUT] \ac{RDF} files can be uploaded to a \verb#rdf_sink# folder through the \ac{HTTP} PUT method. Using cURL, an example is:
   \begin{verbatim}
     curl -T foaf.rdf
       http://localhost:8890/DAV/home/dba/rdf_sink/foaf.rdf
       -u dba:dba
   \end{verbatim}
 
-  \item[\ac{HTTP} POST] Virtuoso supports \ac{HTTP} POST method to execute \ac{SPARQL}/Update language using \verb#Content-Type: application/sparql-query# in the \ac{HTTP} request headers. An example using cURL can be:
+  \item[\ac{HTTP} POST] Virtuoso supports \ac{HTTP} POST method to execute \ac{SPARQL}/Update language using \verb#Content-Type: application/sparql-query# in the \ac{HTTP} request headers. Using cURL, an example is:
   \begin{verbatim}
     curl -i -d "INSERT {
       <http://w3id.org/people/lucamartinelli>
