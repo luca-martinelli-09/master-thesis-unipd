@@ -96,6 +96,12 @@
 %% imports
 \RequirePackage{import}
 
+% tables
+\RequirePackage{tabularx}
+\RequirePackage{xltabular}
+\RequirePackage{longtable}
+\RequirePackage{booktabs}
+
 
 % -- DEFINITIONS --
 
