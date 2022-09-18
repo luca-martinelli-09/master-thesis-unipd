@@ -1,2 +1,23 @@
 \section{Italian cities}
 \label{sec:italian-cities}
+
+For what concerns Italian cities, has been analyzed the most economically and culturally relevant cities in northern, central, and southern Italy: Bologna, Firenze, Genova, Milano, Napoli, Roma, Torino, and Venezia. The results, collected during April 2022, are shown in Table \ref{tab:italian-cities}. All the cities has obtained a score of three stars, since data are mostly published in non-proprietary format, in particular \ac{CSV}, \ac{JSON}, and Shapefile. Firenze and Bologna use \acs{API} that serves the resources in different formats. Firenze's data can be accessed in \acs{JSON} format or downloaded as a ZIP archive containing the \ac{CSV} file and a metadata file. Bologna, on the other hand, lets export resources in different formats, including \ac{RDF}/\ac{XML}, \ac{JSON}-LD, N-Triples, and Turtle. However, these resources are not accessible through \ac{SPARQL}, there are no semantic information, and they're not linked each other. For these reasons this catalog also obtained three stars.
+
+\begin{table}[!ht]
+  \onehalfspacing
+  \centering
+  \begin{tabular}{|l|l|l|l|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{City}} & \multicolumn{1}{c|}{\textbf{\# Datasets}} & \multicolumn{1}{c|}{\textbf{Most common file type}} & \multicolumn{1}{c|}{\textbf{Score}} \\ \hline
+    Firenze                   & 1902                                             & Uses \acs{API}                                       & 3                                   \\ \hline
+    Bologna                   & 425                                              & Uses \acs{API}                                       & 3                                   \\ \hline
+    Milano                    & 1618                                             & CSV (1540)                                           & 3                                   \\ \hline
+    Torino                    & 1954                                             & CSV (1460)                                           & 3                                   \\ \hline
+    Roma                      & 319                                              & CSV (230)                                            & 3                                   \\ \hline
+    Venezia                   & 248                                              & CSV (179)                                            & 3                                   \\ \hline
+    Genova                    & 138                                              & CSV (111)                                            & 3                                   \\ \hline
+    Napoli                    & 62                                               & CSV (35)                                             & 3                                   \\ \hline
+  \end{tabular}
+  \caption{Analysis of Italian cities' Open Data Portals. The data reported in this table was collected during April 2022.}
+  \label{tab:italian-cities}
+\end{table}
