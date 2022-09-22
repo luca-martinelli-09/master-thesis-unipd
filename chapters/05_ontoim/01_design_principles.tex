@@ -1,2 +1,49 @@
 \section{Overall design principles}
 \label{sec:design-principles}
+
+The design of the ontology started analyzing the data collected from Comune di Sona, and public agencies. Table \ref{tab:data-and-source} shows what data were collected and where they were collected from.
+
+\begin{table}[!ht]
+  \onehalfspacing
+  \centering
+  \begin{tabular}{|p{0.6\textwidth}|p{0.34\textwidth}|}
+  \hline
+  \multicolumn{1}{|c|}{\textbf{Data}}                                                         & \textbf{Source} \\ \hline
+  Demographic statistics (citizens by location and year, citizenship of foreigners, statistics on names and surnames) & Comune di Sona                    \\ \hline
+  Associations                                                                                                        & Comune di Sona                    \\ \hline
+  Civil status events (births, deaths, emigrations, immigrations, marriages, civil unions, divorces)                  & Comune di Sona                    \\ \hline
+  Concession acts                                                                                                     & Comune di Sona                    \\ \hline
+  Cultural events                                                                                                     & Comune di Sona                    \\ \hline
+  List of majors                                                                                                      & Comune di Sona                    \\ \hline
+  Municipal heritage                                                                                                  & Comune di Sona                    \\ \hline
+  Museums and cultural heritage                                                                                       & Comune di Sona                    \\ \hline
+  Point of Interests                                                                                                  & Comune di Sona                    \\ \hline
+  Popular University (courses and subscribers)                                                                        & Comune di Sona                    \\ \hline
+  Traffic observations                                                                                                & Local police                      \\ \hline
+  Accommodation facilities                                                                                            & Regione Veneto and Comune di Sona \\ \hline
+  Tourism (arrivals and presences by nationality/region)                                                                                                             & Regione Veneto                    \\ \hline
+  Private organizations                                                                                               & Camera di Commercio               \\ \hline
+  Addresses and civic numbers                                                                                         & Agenzia delle Entrate             \\ \hline
+  Municipal offices                                                                                                   & IPA (\ac{AgID})                        \\ \hline
+  Waste production                                                                                                    & ISPRA                             \\ \hline
+  Road accidents                                                                                                      & ISTAT                             \\ \hline
+  Schools                                                                                                             & Ministero dell'Istruzione         \\ \hline
+  \end{tabular}
+  \caption{The data collected as reference for designing the OntoIM ontology, and their source.}
+  \label{tab:data-and-source}
+\end{table}
+
+As said in Chapter \ref{chp:requirements}, the best practice of using existing ontologies where possible was followed. The next step then was to figure out which areas were already described by OntoPiA ontologies and which, instead, needed to be created or imported. The new classes created, moreover, following the design principles of OntoPiA, are subclasses of others existing in OntoPiA ontologies and, in particular, the top-level ontology \verb#L0#. Indeed, as said in Section \ref{sec:ontopia}, this ontology allows all the
+ontologies to be linked, enabling the network of ontologies.
+
+The first version of \ac{OntoIM} ontology is composed of 526 classes, 570 object properties, 405 data properties. The \ac{URI} of the ontology, the controlled vocabularies and the resources are secure and permanent by using the  W3 Permanent Identifier Community Group, which let create permanent \acp{URL} that redirects to defined locations on the Web. Moreover, thanks to this service it was possible to implement a content negotiation mechanisms, to return serialized resources and ontologies in different formats (such as \ac{RDF}/\ac{XML} or Turtle), or its visualization/documentation, depending on the request.
+
+The persistent \ac{URI}, and the full documentation of \ac{OntoIM} ontology is available at \url{https://w3id.org/ontoim}.
+
+Finally, all the files, and the documentation of the ontologies and the controlled vocabularies are Open Source and available on a GitHub repository\footnote{\url{https://github.com/luca-martinelli-09/ontoim}}, which also allows for a permanent location to place the serialization and documentation of the ontology and the other resources.
+
+\subsection{Semantic areas}
+\label{subsec:semantic-areas}
+
+\subsection{Controlled vocabularies}
+\label{subsec:controlled-vocabularies}
