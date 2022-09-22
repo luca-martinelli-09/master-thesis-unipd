@@ -1,2 +1,17 @@
 \chapter{Requirements analysis}
 \label{chp:requirements}
+
+As introduced in Chapter \ref{chp:introduction}, this thesis aims to facilitate the publication and dissemination of Open Data, and in particular \acl{LOD}, by Italian municipalities by designing and developing an ontology to describe the data, and to develop a web application to make it usable for local government, citizens and businesses to consult the data. In particular, the ontology and the web applications are designed taking in consideration the needs and the data of the Comune di Sona\footnote{\url{https://comune.sona.vr.it/}}, as part of the \textit{Innovation Lab}\footnote{\url{https://innovationlab.regione.veneto.it/}} project, a project financed by Regione Veneto that aims to spread digital and Open Data culture.
+
+\paragraph*{}
+One of the best practices in designing an ontology is to reuse, where possible, existing ontologies \cite{noy2001ontology}. Following this principle, the OntoIM ontology imports the ontologies of the OntoPiA network. As described in Section \ref{sec:ontopia}, OntoPiA is maintained by \ac{AgID} and the Italian Digital Transformation Team, and aims to describe different domains of the Italian public administrations, and in particular: people, public and private organizations, addresses and locations, point of interests, accommodation facilities, paths, cultural heritage, cultural events, public services, parking, public contracts, transparency obligations, projects, routes, IoT events, indicators, and higher education and research. Where possible, these ontologies are also aligned with existing ontologies on the web.
+
+The OntoIM ontology was therefore designed and developed as an extension of the existing OntoPiA ontology, and with the aim that it would become an integral part of the network.
+
+\paragraph*{}
+The first part of the design phase involved not only analyzing the data provided by the Comune di Sona, but also analyzing which data the major Italian cities share on their Open Data portals. This choice is due to the fact that we want to create an ontology that can also be reused by other administrations, and takes into account possible future extensions. The work described in Chapter \ref{chp:related}, therefore, served not only to analyze how data are made public by various cities, but also what data is available. In addition, some data have been collected from Italian government portals or public agencies, such as ISTAT or Agenzia delle Entrate, to have uniformly structured data across cities.
+
+The data collected comprehends: private organizations, associations, municipal offices, events, cultural heritage, point of interests, accommodation facilities, street directory, traffic and road accidents, municipal heritage, concession acts, waste production, schools and courses organized by private organizations, and demographic statistics (which also includes statistics on tourism, association members, students, and event attendance). In addition to these requests, to make an ontology that is adaptable to other municipalities as well, the census of plants, green areas and street signs, and hospitals were added. Of course, since this is Government Open Data, the privacy of organizations and citizens must also be guaranteed.
+
+\paragraph*{}
+Once the data were collected, it was necessary to understand how well OntoPiA ontologies could describe the areas involved. After that, we proceeded to design the ontology by adding the missing classes and properties, and going on to modify the existing ones where necessary.
