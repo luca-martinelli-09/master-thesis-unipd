@@ -138,7 +138,7 @@
 \repeat
 }
 
-\newcommand{\etc}{etc\dots}
+\newcommand{\etc}{etc}
 
 % -- LINKS SETUP --
 

@@ -34,16 +34,36 @@ The design of the ontology started analyzing the data collected from Comune di S
 \end{table}
 
 As said in Chapter \ref{chp:requirements}, the best practice of using existing ontologies where possible was followed. The next step then was to figure out which areas were already described by OntoPiA ontologies and which, instead, needed to be created or imported. The new classes created, moreover, following the design principles of OntoPiA, are subclasses of others existing in OntoPiA ontologies and, in particular, the top-level ontology \verb#L0#. Indeed, as said in Section \ref{sec:ontopia}, this ontology allows all the
-ontologies to be linked, enabling the network of ontologies.
+ontologies to be linked, enabling the network of ontologies. The next sections of this thesis will focus on the classes and properties that are strictly part of the \ac{OntoIM} ontology, while excluding those that are part of the OntoPiA ontology.
 
 The first version of \ac{OntoIM} ontology is composed of 526 classes, 570 object properties, 405 data properties. The \ac{URI} of the ontology, the controlled vocabularies and the resources are secure and permanent by using the  W3 Permanent Identifier Community Group, which let create permanent \acp{URL} that redirects to defined locations on the Web. Moreover, thanks to this service it was possible to implement a content negotiation mechanisms, to return serialized resources and ontologies in different formats (such as \ac{RDF}/\ac{XML} or Turtle), or its visualization/documentation, depending on the request.
 
-The persistent \ac{URI}, for the \ac{OntoIM} ontology is \url{https://w3id.org/ontoim}.
+The persistent \ac{URI}, for the \ac{OntoIM} ontology is \url{https://w3id.org/ontoim}, while its prefix is \verb#ontoim#.
 
 Finally, all the files, and the documentation of the ontologies and the controlled vocabularies are Open Source and available on a GitHub repository\footnote{\url{https://github.com/luca-martinelli-09/ontoim}}, which also allows for a permanent location to place the serialization and documentation of the ontology and the other resources.
 
 \subsection{Semantic areas}
 \label{subsec:semantic-areas}
 
+The \ac{OntoIM} ontology that extends OntoPiA is divided into nine semantic areas, which describe seven specific domains about the municipality and the local territory. The semantic areas are as follows, and will be explored individually in Section \ref{sec:area-by-area}:
+
+\begin{description}
+  \item[Demographic Observations and Events] This semantic area is used to describe not only the number of citizens by year, by geographic area, and by different properties, but also the number of employees that work in an organization, the members part of an association, the number of tourists, the number of subscribers to an event, and so on. It also includes the number of civic status events, like births or deaths, and singular events, like a subscription to an event, to an accommodation facility or a single civil status event, like a marriage;
+  \item[Facilities and Cadastral Data] The entities of this area describe general facilities and their cadastral data;
+  \item[Organizations and Associations] This semantic area extends the \verb#CLV_AP-IT# ontology of OntoPiA. It describes the private and public organizations, adding information such as the enterprises' life cycle events, the typology of the organizations, and the heritage. This semantic area comprehends also associations, which are treated as private organizations;
+  \item[Transparency] This semantic area includes concession acts and payments from organizations (generally public administrations) to other beneficiaries;
+  \item[Roads and Traffic] The entities of this area describe traffic observations, road signals, and road accidents;
+  \item[Schools] This semantic area describes public and private schools, comprehensive institutes, and courses organized by public or private organizations;
+  \item[Green Zones and Plants] This area describes green zones, with their information, and the plants with their status;
+  \item[Hospitals] Entities in this area are used to describe hospitals, and hospital departments;
+  \item[Waste Production] It is the area that describes the observations on waste production by year, by waste category and by geographic area.
+\end{description}
+
 \subsection{Controlled vocabularies}
 \label{subsec:controlled-vocabularies}
+
+For some classes it was necessary to introduce categories or types to classify them. Some examples are the type of civil status event, the category of an association, the type of traffic signal \etc. Instead of introducing numerous named individuals into the ontology, some controlled vocabularies and, in particular, taxonomies were chosen. This makes it easier to modify and keep up-to-date the possible categories and types of the various classes, and it was also possible to define hierarchies and subcategories (e.g., a wedding can be religious wedding or civil wedding).
+
+In two cases, named individuals within the ontology were used instead: for traffic direction and for plant status. Indeed, in these cases, it was not necessary to define a hierarchy, and the types will remain unchanged over time.
+
+To distinguish controlled vocabularies from the entities of the ontology, the \ac{URI} prefix \url{https://w3id.org/ontoim/controlled-vocabulary/} has been used.
