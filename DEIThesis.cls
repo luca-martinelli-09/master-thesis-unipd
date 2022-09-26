@@ -102,6 +102,9 @@
 \RequirePackage{longtable}
 \RequirePackage{booktabs}
 
+% sideways images
+\RequirePackage{rotating}
+
 
 % -- DEFINITIONS --
 
