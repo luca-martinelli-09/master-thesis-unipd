@@ -83,6 +83,7 @@
 % plots, drawings etc...
 \RequirePackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows.meta}
+\RequirePackage{dirtree}
 
 % references
 \RequirePackage[autostyle]{csquotes}
@@ -104,6 +105,8 @@
 
 % sideways images
 \RequirePackage{rotating}
+
+\RequirePackage[htt]{hyphenat}
 
 
 % -- DEFINITIONS --

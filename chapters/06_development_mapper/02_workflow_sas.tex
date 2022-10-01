@@ -1,2 +1,263 @@
-\section{Workflows for different semantic areas}
+\section{Data mapping for different semantic areas}
 \label{sec:workflows-sas}
+
+After presenting and describing the \verb#ontopia-py# and \verb#ontoim-py# libraries, the next sections will show how the data entry of the Comune di Sona took place for the following semantic areas: Addresses, Organizations, and Schools. Indeed, these three semantic area are respectively examples of data mapping from the CKAN Open Data Portal, offline file, and government Open Data portals.
+
+\paragraph*{}
+All written programs make use of common functions grouped in a package called \verb#utils#. These functions are: (1) \verb#getConfig#, to retrieve the configuration file; (2) \verb#getOpenData#, to retrieve data from the three different sources presented in Chapter \ref{chp:rdf-builder} and return it in the form of pandas \verb#DataFrame#; (3) \verb#standardizeName#, which transforms strings into a standard format where only initials are capitalized, and apostrophe characters are converted to the relevant accented characters; (4) \verb#genNameForID#, which generates an identifier from the name, removing special characters and using a hyphen as a separator. This function is used only in some cases where the name is known to be unique, such as for localities. In other cases, it is preferable to use identifiers such as vat number or a sequence number.
+
+\paragraph*{}
+The full code of the \ac{RDF} Graph Builder for the Comune di Sona is available on GitHub at \url{https://github.com/luca-martinelli-09/sona-lod}.
+
+\lstset{literate={à}{{\`a}}1}
+\begin{lstlisting}[language=python,caption={The common functions in the utils package.},label=code:utils-py]
+def getConfig(fileName):
+  config = configparser.ConfigParser()
+  config.read(fileName)
+
+  return config
+
+def getOpenData(resID, baseURL=None, whereSQL="", rawData=False, dtype=None, strip=True):
+  config = getConfig('../../conf.ini')
+
+  offline = False if baseURL else config.getboolean("API", "use_offline")
+  baseURL = baseURL if baseURL else config.get("API", "base_url")
+
+  dataURI = "{}/api/3/action/datastore_search_sql?sql=SELECT * FROM \"{}\" {}".format(baseURL, resID, whereSQL) if not offline else "../../off_data/{}".format(resID)
+  
+  if resID.startswith("http"):
+    offline = False
+    dataURI = resID
+
+  if rawData:
+    if offline:
+      return dataURI
+
+    getDataRequest = urlopen(dataURI)
+    
+    return getDataRequest
+
+  df = None
+
+  if offline:
+    df = pd.read_csv(dataURI, dtype=dtype)
+  else:
+    if resID.endswith("csv"):
+      df = pd.read_csv(dataURI, dtype=dtype)
+    else:
+      tries = 0
+      res = {"success": False}
+      while not res["success"] and tries < 20:
+        res = requests.get(dataURI).json()
+        if res["success"]:
+          df = pd.DataFrame(res["result"]["records"], dtype=dtype)
+          break
+        tries += 1
+
+  if strip and not df is None:
+    df = df.applymap(lambda x: x.strip() if type(x) == str else x)
+
+  return df
+
+def standardizeName(name):
+  name = name.lower().title()
+
+  if name.endswith("a'"):
+    name = name.removesuffix("a'") + "à"
+
+  return name.strip()
+
+def genNameForID(name):
+  nameID = ""
+
+  name.replace("'", "")
+  name = unidecode.unidecode(name.lower())
+
+  for char in name:
+    nameID += char if char.isalnum() else "-"
+
+  return nameID
+\end{lstlisting}
+
+\subsection{Addresses}
+\label{subsec:addresses-data}
+
+The addresses (streets and civic numbers) is the only semantic area that relies exclusively on the OntoPiA ontology. In particular, the address ontology is \verb#CLV_AP-IT#, and was created in collaboration with ISTAT and the Agenzia delle Entrate. The ontology was developed to describe the data collected in the National Archive of Urban Street Numbers, or ANNCSU\footnote{\url{https://purl.archive.org/anncsu}}, a computerized repository containing the street and house numbers of all Italian municipalities. Access to the archive should be public, but at the moment it is possible to download a municipality's data only through the dedicated portal of the Agenzia delle Entrate and reserved for the municipal contact person for toponymy, who is responsible for managing the updating of the data. From this dedicated portal it is possible to download the list of streets and the list of house numbers. The files are in \ac{CSV} format, and follows a specific structure designed by the two agencies\footnote{\url{https://purl.archive.org/age-anncsu-specifiche}}. The information about the census sections are available on the ISTAT website, as kml file that defines the geographic geometries of each section.
+
+The \ac{URL} of the ANNCSU Dataset for the Comune di Sona is \url{https://w3id.org/sona/data/ANNCSU/}, so the resources will be organized in this Dataset and that \ac{URL} will be their namespace. In detail:
+
+\begin{description}
+  \item[Sona] Is the municipality, for which \verb#owl:sameAs# properties have been defined that link it to external resources concerning the city, such as dbpedia, ISPRA, and the Ministry of Cultural Heritage. The \ac{URL} of this resource is \url{https://w3id.org/sona/data/ANNCSU/023083}, where \verb#023083# is the ISTAT identifier for the city;
+  \item[Census Sections] The file of the census sections has been processed thanks to the \verb#pykml# Python library, thanks to which it is possible to retrieve the section number and its geographic geometry. The \ac{URL} of the resources is formatted as \path{https://w3id.org/sona/data/ANNCSU/cs/{id}}, where \verb#id# is the number of the census section. The \ac{URL} of the geometry resource that defines the geographical polygon of the census section is instead formatted as \path{https://w3id.org/sona/data/ANNCSU/gsc/{id}};
+  \item[Streets Names] The street names are retrieved from the file of the streets provided by the Agenzia delle Entrate. The \ac{URL} of the resources is formatted as \path{https://w3id.org/sona/data/ANNCSU/street/{id_street}}, where the \verb#id_street# is the national identifier for the street, which can be retrieved by the field \verb#PROGR_NAZIONALE# in the \ac{CSV} file;
+  \item[Civic Numbers] As for street names, the civic numbers are retrieved from the file of house numbers provided by the Agenzia delle Entrate. The resources are located at \path{https://w3id.org/sona/data/ANNCSU/civic/{id_num}}, where \verb#id_num# in this case is the field \verb#PROGR_CIVICO#, and it is the national identifier of the house number;
+  \item[Addresses] Addresses are combination of street names and civic numbers. These are the resources part of the ANNCSU dataset, and their \acp{URL} are formatted as \path{https://w3id.org/sona/data/ANNCSU/ad-{id_street}-{id_num}}. For each street, in addition to house numbers, an address with \verb#id_num# equals to \verb#snc# is created, indicating the absence of a house number. Finally, for some addresses, thanks to OpenStreetMap\footnote{\url{https://www.openstreetmap.org}}, it was possible to estimate the location, which is described in geometry resources located at \path{https://w3id.org/sona/data/ANNCSU/gcn/{id_num}}.
+\end{description}
+
+Code \ref{code:anncsu-streets-py} shows the part of the \verb#config.ini# file relative to the ANNCSU, and the part of the \ac{RDF} Graph Builder that inserts the streets toponyms into the graph.
+
+\begin{lstlisting}[language=python,caption={The part of the RDF Graph Builder that inserts the streets toponyms into the graph, and the config.ini file relative to the addresses.},label=code:anncsu-streets-py]
+# config.ini
+[ANNCSU]
+streets = 7b3401e5-7235-43d4-b8ed-8e11f30ec404
+civics = e22af300-c934-4d7e-b84a-3f58e0862e4c
+census_sections = 1f929641-0aa5-49b7-b012-6ea29ceca759
+post_code = 37060
+
+# rdf_builder_anncsu.py
+config = getConfig("conf.ini")
+
+anncsuAddresses = getOpenData(config.get("ANNCSU", "streets"))
+anncsuAddresses.set_index("PROGR_NAZIONALE", inplace=True)
+
+for streetID, address in anncsuAddresses.iterrows():
+  dugName = standardizeName(address["DUG"])
+  streetName = standardizeName(address["DENOM_COMPLETA"])
+
+  fullName = "{} {}".format(
+    standardizeName(address["DUG"]),
+    standardizeName(address["DENOM_COMPLETA"]))
+
+  streetToponym = StreetToponym(
+    id="street/" + str(streetID),
+    baseUri=ANNCSU,
+    dataset=ANNCSU_DATASET,
+    titles=[Literal(fullName, datatype=XSD.string)])
+
+  streetToponym.toponymQualifier = [Literal(dugName, datatype=XSD.string)]
+  streetToponym.officialStreetName = [Literal(streetName, datatype=XSD.string)]
+
+  streetToponym.addToGraph(g)
+\end{lstlisting}
+
+\subsection{Organizations}
+\label{subsec:organizations-data}
+
+As specified in Table \ref{tab:data-and-source}, the information on private organizations comes from the Camera di Commercio. Some of this information, for privacy reasons, such as the tax code, cannot be published. However, thanks to the tax code it is possible to categorize businesses into women's, youth and foreign businesses, as specified in Section \ref{subsec:organizations-associations}. It is therefore necessary, in this case, to retrieve the data from an offline file that contains all the information, and publish the censored version on Open Data portals.
+
+The \ac{URL} of the dataset of organizations situated in the Comune di Sona is \url{https://w3id.org/sona/data/organization/}, so the resources will be organized in this Dataset and that \ac{URL} will be their namespace. Resources are identified by their vat number, which is unique to each enterprise. Only in the case of individuals for whom no vat number is indicated, the tax number is used.
+
+In addition to enterprises, instances describing the online contact points of organizations have as their \ac{URL} \path{https://w3id.org/sona/data/organization/ocp/{vat_num}}, which in turn link back to pecs located at \ac{URL} \path{https://w3id.org/sona/data/organization/pec/{id_pec}}, where \verb#id_pec# is generated with the \verb#genNameForID# function described in Section \ref{sec:workflows-sas}.
+
+As said in Section \ref{subsec:organizations-associations}, the Camera di Commercio provides a list of all the organizations present in the city, both if they are local units and if they are the head office. The typology is specified in the \ac{CSV} file in the field \verb#UL-SEDE#. All the main offices of the organizations are then entered first. Next, the enterprises indicated as local units are processed and, if already present in the graph, the \verb#hasLocalUnitAddress# property is added along with their address. Otherwise, the organization is inserted without specifying the \verb#hasPrimaryAddress# property, but only \verb#hasLocalUnitAddress#.
+
+Another problem encountered at this stage concerns the addresses of organizations, but also of other resources in other semantic areas, such as associations, schools, and municipal offices. The addresses, in fact, are present in text format and, often, do not correspond to the official addresses in the national archive (e.g., "Via Francesco Petrarca" is listed as "Via Petrarca") and do not have standard formatting. This is due to the fact that the address is given by the company and is not normalized by the Camera di Commercio. The goal is to retrieve from each address the street identifier and that of the house number (if any). To do this, the program makes use of the function shown in Code \ref{code:organizations-anncsu-py}. This function retrieves the street directory from the files presented in Section \ref{subsec:addresses-data}, and compares the address to be searched against this list, returning a ranking of the most similar results. The \verb#extract# function of the \verb#rapidfuzz# library is used for this part. From here, the desired address must be manually selected, and the two searched identifiers will be returned.
+
+\begin{lstlisting}[language=python,caption={The function that retrieve the street identifiers from the string of the address.},label=code:organizations-anncsu-py]
+def queryStreetCode(q):
+  config = getConfig('../../conf.ini')
+
+  streetsDF = getOpenData(config.get("ANNCSU", "streets")).set_index(["PROGR_NAZIONALE"])
+  civicsDF = getOpenData(config.get("ANNCSU", "civics")).set_index(["PROGR_CIVICO"])
+
+  streetsForSearchIDs = [(c["PROGR_NAZIONALE"], progrCivico) for progrCivico, c in civicsDF.iterrows()]
+  streetsForSearch = ["{} {} {}{} {}".format(
+    streetsDF.loc[c["PROGR_NAZIONALE"]]["DUG"],
+    streetsDF.loc[c["PROGR_NAZIONALE"]]["DENOM_COMPLETA"],
+    c["CIVICO"],
+    "" if pd.isna(c["ESPONENTE"]) else c["ESPONENTE"],
+    streetsDF.loc[c["PROGR_NAZIONALE"]]["LOCALITA'"],
+  ).lower() for _, c in civicsDF.iterrows()]
+
+  streetsForSearchIDs.extend([(progrNazionale, None) for progrNazionale, _ in streetsDF.iterrows()])
+  streetsForSearch.extend(["{} {} {}".format(s["DUG"], s["DENOM_COMPLETA"], s["LOCALITA'"]).lower() for _, s in streetsDF.iterrows()])
+
+  searchResults = process.extract(q.lower(), streetsForSearch, scorer=fuzz.WRatio, limit=10)
+
+  print(f"\n\n[RESULTS FOR] {q}")
+  for res, val, i in searchResults:
+    print(f"{i}) {res} ({val})")
+
+  selectedResult = input("Choose one or type custom search: ")
+
+  if selectedResult.isnumeric():
+    return streetsForSearchIDs[int(selectedResult)]
+  elif selectedResult == "":
+    return None, None
+  else:
+    return queryStreetCode(selectedResult)
+\end{lstlisting}
+
+The function is then used as follows:
+
+\begin{lstlisting}[language=python]
+address = organizationInfo["INDIRIZZO"]
+progrNazionale, progrCivico = queryStreetCode(address) if not pd.isna(address) else (None, None)
+\end{lstlisting}
+
+\subsection{Schools}
+\label{subsec:schools-data}
+
+The list of schools present in the municipality is directly taken from the official data portal of the Ministero dell'Istruzione\footnote{\url{https://dati.istruzione.it/opendata/}}. In this way, as with businesses, the data structure is standard nationwide, and the code can be easily reused without making further changes. From the portal are available both public and private schools, and the relative comprehensive institutes, for which the comprehensive institute code is the same as the school code. Other information regards the address, the email, and the website of the schools.
+
+The \ac{URL} of the dataset of schools situated in the Comune di Sona is \url{https://w3id.org/sona/data/school/}, so the resources will be organized in this Dataset and that \ac{URL} will be their namespace. Resources are identified by the code assigned by the Ministero dell'Istruzione, which is unique to each school. As for organizations, the online contact point are located at \path{https://w3id.org/sona/data/school/ocp/{id_school}}, while the email, the certified email, and the website are located at \path{https://w3id.org/sona/data/school/{contact_type}/{id_c}}, where \verb#contact_type# is respectively \verb#email#, \verb#pec#, and \verb#web#, and \verb#id_c# is an identifier generated by the \verb#genNameForID# function.
+
+The same address considerations made for organizations in Section \ref{subsec:organizations-data} also apply.
+
+Finally, the typology of the school are mapped using a Python dictionary into the relatively identifiers of the controlled vocabulary described in Section \ref{subsec:schools}
+
+\paragraph*{}
+For what concerns demographic observations on the schoolchildren, the Ministero dell'Istruzione provides, for the public schools, information about the number of the children, both categorized by gender, by course, and by age.
+
+In this case, the \acp{URL} of the observations resources are defined as follows: \path{https://w3id.org/sona/data/school/statistics/{id}}, where \verb#id# is the sequence number of the data inserted. The demographic references are located at \path{https://w3id.org/sona/data/demographic-references/{id}}. In this case the \verb#id# can be \verb#M# for males, \verb#F# for females, or \verb#age-{age}# for the age. For what concerns the temporal entity that defines the period to which the observation refers, the resources of type \verb#TemporalEntity# are located at \path{https://w3id.org/sona/data/ti/{sy}-{ey}}, where \verb#sy# stands for the beginning year of the academic year, and \verb#ey# for the end. Since in this case the temporal entity represents a period, the start date is fixed to \verb#{sy}-09-01#, and the end date to \verb#{ey}-07-01#.
+
+Code \ref{code:schools-do-py} shows the part of the code that build the \ac{RDF} Graph for demographic observations on the schools' schoolchildren.
+
+\begin{lstlisting}[language=python,caption={The part of the code that build the RDF Graph for demographic observations on the school.},label=code:schools-do-py]
+for (schoolCode, academicYear), statsInfo in sumDataDF.iterrows():
+  academicYear = int(str(academicYear)[:4])
+
+  school = School(
+      id=schoolCode,
+      baseUri=SCHOOL_DATA
+  )
+
+  schoolInfo = schoolsDF.loc[schoolCode]
+
+  temporalEntity = TimeInterval(
+      id="ti/{}-{}".format(academicYear, academicYear + 1),
+      baseUri=SCHOOL_DATA,
+      dataset=SCHOOL_DATASET,
+      titles=[Literal("{}/{}".format(academicYear, academicYear + 1), datatype=XSD.string)]
+  )
+  temporalEntity.startTime = Literal(str(academicYear) + "-09-01", datatype=XSD.date)
+  temporalEntity.endTime = Literal(str(academicYear + 1) + "-07-01", datatype=XSD.date)
+  temporalEntity.addToGraph(g)
+
+  for sexCode in ["M", "F"]:
+    subscribers = Subscribers(
+      id="statistics/{}-{}-{}".format(schoolCode, sexCode, academicYear),
+      baseUri=SCHOOL_DATA,
+      dataset=SCHOOL_DATASET,
+      titles=[
+        Literal("{} - {} - A.A. {}/{}".format(
+          "Alunni (maschi)" if sexCode == "M" else "Alunne (femmine)",
+          standardizeName(schoolInfo["DENOMINAZIONESCUOLA"]),
+          academicYear,
+          academicYear + 1
+        ), datatype=XSD.string)
+      ]
+    )
+
+    demReference = AlivePerson(
+      id="demographic-reference/" + sexCode,
+      baseUri=SCHOOL_DATA,
+      dataset=SCHOOL_DATASET,
+      titles=[
+        Literal("Male" if sexCode == "M" else "Female", lang="en"),
+        Literal("Maschio" if sexCode == "M" else "Femmina", lang="it")
+      ]
+    )
+    demReference.hasSex = Sex(id=sexCode, baseUri=PERSON_SEX)
+    demReference.addToGraph(g)
+
+    subscribers.hasDemographicReference = demReference
+    subscribers.hasTemporalEntity = temporalEntity
+
+    subscribers.observationValue = Literal(statsInfo["ALUNNI" + ("MASCHI" if sexCode == "M" else "FEMMINE")], datatype=XSD.positiveInteger)
+
+    subscribers.addToGraph(g)
+
+    school.hasSubscribers = [subscribers]
+    school.addToGraph(g, onlyProperties=True)
+\end{lstlisting}

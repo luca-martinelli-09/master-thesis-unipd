@@ -1,2 +1,271 @@
-\section{The OntoPiA-Py and OntoIM-Py libraries}
+\section{OntoPiA-Py and OntoIM-Py libraries}
 \label{sec:onto-py}
+
+To simplify and facilitate the process of creating the \ac{RDF} Graph and make the program more understandable, two libraries were created that allow the creation of resources and the assignment of properties using the object-oriented programming paradigm. These libraries are called \verb#ontopia-py# and \verb#ontoim-py#, for OntoPiA and \ac{OntoIM} ontologies, respectively. Following the \ac{OntoIM} ontology, the \verb#ontoim-py# library imports the \verb#ontopia-py# library. The two libraries are also available under an open source license on GitHub\footnote{\url{https://github.com/luca-martinelli-09/ontoim-py}}\footnote{\url{https://github.com/luca-martinelli-09/ontopia-py}}, and can be installed through the Python PyPI\footnote{\url{https://pypi.org/}} package manager, with the command:
+
+\begin{verbatim}
+  pip install ontopia_py ontoim_py
+\end{verbatim}
+
+The \verb#ontopia-py# package is organized as follows, while the \verb#ontoim-py# package follows a similar structure:
+
+\paragraph*{}
+\dirtree{%
+.1 /.
+.2 ontopia\_py.
+.3 accesscondition.
+.4 \_\_init\_\_{.}py.
+.4 AccessCondition{.}py.
+.4 AdmissionType{.}py.
+.4 Booking{.}py.
+.4 OpeningHoursSpecification{.}py.
+.4 TemporaryClosure{.}py.
+.3 clv.
+.4 \ldots{}.
+.3 \dots.
+.3 \_\_init\_\_{.}py.
+.3 Dataset{.}py.
+.3 ns{.}py.
+.3 Thing{.}py.
+.2 setup{.}py.
+}
+
+\paragraph*{}
+This directory \verb#ontopia_py# holds the directories of the OntoPiA's ontologies. Each of these subdirectory holds the files that represent the classes of the ontology. The \verb#ns.py# file contains the namespaces of both ontologies and controlled vocabularies, as shown in Code \ref{code:namespaces-py}.
+
+\begin{lstlisting}[language=python,caption={Part of the ns.py file that contains the namespaces of OntoPiA's ontologies.},label=code:namespaces-py]
+from rdflib import Namespace
+
+L0 = Namespace("https://w3id.org/italia/onto/l0/")
+TRANSP = Namespace("https://w3id.org/italia/onto/Transparency/")
+TI = Namespace("https://w3id.org/italia/onto/TI/")
+SM = Namespace("https://w3id.org/italia/onto/SM/")
+ROUTE = Namespace("https://w3id.org/italia/onto/Route/")
+RO = Namespace("https://w3id.org/italia/onto/RO/")
+PUBC = Namespace("https://w3id.org/italia/onto/PublicContract/")
+PROJ = Namespace("https://w3id.org/italia/onto/Project/")
+POT = Namespace("https://w3id.org/italia/onto/POT/")
+POI = Namespace("https://w3id.org/italia/onto/POI/")
+PARK = Namespace("https://w3id.org/italia/onto/PARK/")
+MU = Namespace("https://w3id.org/italia/onto/MU/")
+LANG = Namespace("https://w3id.org/italia/onto/Language/")
+IOT = Namespace("https://w3id.org/italia/onto/IoT/")
+INDIC = Namespace("https://w3id.org/italia/onto/Indicator/")
+HER = Namespace("https://w3id.org/italia/onto/HER/")
+CULTHER = Namespace("https://w3id.org/italia/onto/CulturalHeritage/")
+CPV = Namespace("https://w3id.org/italia/onto/CPV/")
+CPSV = Namespace("https://w3id.org/italia/onto/CPSV/")
+CPEV = Namespace("https://w3id.org/italia/onto/CPEV/")
+COV = Namespace("https://w3id.org/italia/onto/COV/")
+CLV = Namespace("https://w3id.org/italia/onto/CLV/")
+PATHS = Namespace("https://w3id.org/italia/onto/AtlasOfPaths/")
+ACOND = Namespace("https://w3id.org/italia/onto/AccessCondition/")
+ACCO = Namespace("https://w3id.org/italia/onto/ACCO/")
+ADMS = Namespace("https://w3id.org/italia/onto/ADMS/")
+CIS = Namespace("http://dati.beniculturali.it/cis/")
+\end{lstlisting}
+
+The file \verb#__init__.py# contains the library's main information, like the version number, the description, and the author. Two functions are also defined in this file:
+
+\begin{description}
+  \item[createGraph] Initializes the \ac{RDF} Graph and binds the main namespaces (XSD, SKOS, DCAT, \etc) and those declared in the \verb#ns.py# file;
+  \item[saveGraph] Serializes the graph in the different formats.
+\end{description}
+
+These two functions are the one showed in Code \ref{code:init-ontopia-py}.
+
+\begin{lstlisting}[language=python,caption={Part of the \_\_init\_\_.py file that contains the two functions for creating and saving the graph.},label=code:init-ontopia-py]
+def createGraph():
+  g = Graph()
+
+  g.bind("xsd", XSD)
+  g.bind("foaf", FOAF)
+  g.bind("owl", OWL)
+  g.bind("dc", DC)
+  g.bind("xml", XMLNS)
+  g.bind("dct", DCTERMS)
+  g.bind("rdf", RDF)
+  g.bind("rdfs", RDFS)
+  g.bind("dcat", DCAT)
+  g.bind("prov", PROV)
+  g.bind("skos", SKOS)
+
+  g.bind("l0", L0)
+  g.bind("trapit", TRANSP)
+  g.bind("tiapit", TI)
+  g.bind("smapit", SM)
+  g.bind("rtapit", ROUTE)
+
+  ...
+
+  return g
+
+def saveGraph(g: Graph, fileName: str):
+  formats = [
+    {"ext": "ttl", "fmt": "turtle"},
+    {"ext": "rdf", "fmt": "xml"}
+  ]
+
+  for format in formats:
+    ext = format["ext"]
+    fmt = format["fmt"]
+
+    with open("{}.{}".format(fileName, ext), "w", encoding="utf-8") as fp:
+      fp.write(g.serialize(format=fmt))
+\end{lstlisting}
+
+The most important file, that initialize a resource, is \verb#Thing.py#, and all the other classes extends the class \verb#Thing#. The class \verb#Thing# initialize the resource, add the labels and, if specified, connect the resource to a \verb#dcat:Dataset#. In this way, the functions that are responsible for entering the main properties, common to all resources, are handled by the \verb#Thing# class. The subclasses then only have to deal with defining the attributes, which correspond to the properties to be inserted into the graph.
+
+\begin{lstlisting}[language=python,caption={The ontopia-py's Thing class.},label=code:thing-ontopia-py]
+class Thing:
+  _dataset: URIRef = None
+  _titles: List[Literal] = []
+  uriRef: URIRef = None
+
+  def __init__(self, id: str, baseUri: Namespace, dataset: Dataset = None, titles: List[Literal] = []):
+    self._dataset = dataset
+    self._titles = titles
+    self.uriRef = URIRef(baseUri[id])
+
+  def _addProperties(self, g: Graph):
+    pass
+
+  def addToGraph(self, g: Graph, isTopConcept=False, onlyProperties=False):
+    if not onlyProperties:
+      g.add((self.uriRef, RDF.type, self.__type__))
+      for title in self._titles:
+        g.add((self.uriRef, DC.title, title))
+
+      if self._dataset:
+        g.add((self.uriRef, SKOS.inScheme, self._dataset.uriRef))
+
+      if isTopConcept:
+        g.add((self._dataset.uriRef, SKOS.hasTopConcept, self.uriRef))
+
+    self._addProperties(g)
+\end{lstlisting}
+
+Finally, the \verb#rdfs:subclassOf# property is handled through object-oriented programming inheritance. In the Code \ref{code:sequence-ontopia-py} example, the \verb#Sequence# class, defined in the \verb#L0# ontology, inherits the properties of the \verb#Collection# class, which inherits those of the \verb#Entity# class, which is a subclass of \verb#Thing#. This way it is not necessary to consult the ontology documentation to trace back all the properties that a given class admits, and it is more difficult to make mistakes in creating the graph. In addition, the class type, which is mapped to the \verb#rdf:type# property, is defined by each class in the \verb#__type__# attribute, which defines the \ac{URI} of the ontology class.
+
+\begin{lstlisting}[language=python,caption={The ontopia-py's Sequence and Collection classes. Thanks to the object-oriented programming inheritance it is possible to map ontology classes and properties into Python classes and attributes.},label=code:sequence-ontopia-py]
+# Sequence.py
+class Sequence(Collection):
+  __type__ = L0["Sequence"]
+
+  hasFirstMember: Entity = None
+  hasLastMember: Entity = None
+
+  def _addProperties(self, g: Graph):
+    super()._addProperties(g)
+
+    if self.hasFirstMember:
+      g.add((self.uriRef, L0["hasFirstMember"], self.hasFirstMember.uriRef))
+
+    if self.hasLastMember:
+      g.add((self.uriRef, L0["hasLastMember"], self.hasLastMember.uriRef))
+
+# Collection.py
+class Collection(Entity):
+  __type__ = L0["Collection"]
+
+  hasMember: List[Entity] = None
+
+  def _addProperties(self, g: Graph):
+    super()._addProperties(g)
+
+    if self.hasMember:
+      for hasMember in self.hasMember:
+        g.add((self.uriRef, L0["hasMember"], hasMember.uriRef))
+\end{lstlisting}
+
+Regarding \verb#ontoim-py# library, the structure is the same as that of \verb#ontopia-py#. The \verb#ns.py# file imports all the OntoPiA's namespaces, and declares the \ac{OntoIM} one. The \verb#__init__.py# file imports the \verb#ontopia-py#'s \verb#saveGraph# function, and extends the \verb#createGraph# function adding the new bindings. Classes such as \verb#Organization#, whose declaration is shown in Code \ref{code:organization-ontoim-py}, for example, which extend the OntoPiA ontology class, inherit attributes and functions from the \verb#ontopia-py# library, adding the new ones declared in \ac{OntoIM}.
+
+\begin{lstlisting}[language=python,caption={The ontopim-py's Organization class. This class inherits the one defined in ontopia-py, declaring the new attributes.},label=code:organization-ontoim-py]
+from ontopia_py.cov.Organization import Organization
+
+class Organization(Organization):
+  __type__ = ONTOIM["Organization"]
+
+  hasEmployees: List[Employees] = None
+  hasHeritage: List[Heritage] = None
+  hasLocalUnitAddress: List[Address] = None
+  endActivityDate: Literal = None
+  liquidationDate: Literal = None
+  bankruptcyDate: Literal = None
+
+  def _addProperties(self, g: Graph):
+    super()._addProperties(g)
+
+    if self.hasEmployees:
+        for hasEmployees in self.hasEmployees:
+            g.add((self.uriRef, ONTOIM["hasEmployees"], hasEmployees.uriRef))
+
+    if self.hasHeritage:
+      for hasHeritage in self.hasHeritage:
+        g.add((self.uriRef, ONTOIM["hasHeritage"], hasHeritage.uriRef))
+
+    if self.hasLocalUnitAddress:
+      for hasLocalUnitAddress in self.hasLocalUnitAddress:
+        g.add((self.uriRef, ONTOIM["hasLocalUnitAddress"], hasLocalUnitAddress.uriRef))
+
+    if self.endActivityDate:
+      g.add((self.uriRef, ONTOIM["endActivityDate"], self.endActivityDate))
+
+    if self.liquidationDate:
+      g.add((self.uriRef, ONTOIM["liquidationDate"], self.liquidationDate))
+
+    if self.bankruptcyDate:
+      g.add((self.uriRef, ONTOIM["bankruptcyDate"], self.bankruptcyDate))
+\end{lstlisting}
+
+The process of creating and saving an \ac{RDF} Graph using these two libraries is the following one:
+
+\begin{enumerate}
+  \item Initialize the graph with the function \verb#createGraph#;
+  \item Create a \verb#dcat:Dataset# object using the class \verb#Dataset#, specifying its \ac{URI} and adding properties like the name or the author of the Dataset;
+  \item Add the dataset to the graph calling the function \verb#addToGraph#;
+  \item Initialize the object that must be inserted into the graph, specifying the identifier of the resource, the base \ac{URI}, the dataset into which it is to be inserted, and the name of the resource;
+  \item Add the properties to the resource declaring the attributes of the object created in the step before;
+  \item Add the resource to the graph calling the function \verb#addToGraph#;
+  \item Save the graph using the function \verb#saveGraph#, specifying the filename where to save it.
+\end{enumerate}
+
+The example code of Code \ref{code:example-anncsu-py} creates an \ac{RDF} Graph with the \textit{ANNCSU} dataset, into which a resource of type \verb#StreetToponym# is inserted.
+
+\begin{lstlisting}[language=python,caption={An example of the creation of an RDF Graph with the ontoim-py and ontopia-py libraries.},label=code:example-anncsu-py]
+from rdflib import XSD, Graph, Literal, Namespace
+
+from ontopia_py import Dataset, createGraph
+from ontopia_py.clv import StreetToponym
+
+# Set namespace for data
+DATA: Namespace = Namespace("https://w3id.org/sona/data/")
+ANNCSU: Namespace = Namespace("https://w3id.org/sona/data/ANNCSU/")
+
+# Create the graph and bind the namespace
+g = createGraph()
+g.bind("anncsu", ANNCSU)
+
+# Create the concept scheme
+ANNCSU_DATASET: Dataset = Dataset(DATA["ANNCSU"])
+ANNCSU_DATASET.label = [
+    Literal("Numeri civici e strade urbane", lang="it"),
+    Literal("Civic Addressing and Street Naming", lang="en")
+]
+
+# Add to graph
+ANNCSU_DATASET.addToGraph(g)
+
+# Create the street toponym
+streetToponym: StreetToponym = StreetToponym(
+  id="street-1",
+  baseUri=ANNCSU,
+  dataset=ANNCSU_DATASET,
+  titles=[Literal("Via Roma", datatype=XSD.string)]
+)
+streetToponym.toponymQualifier = "Via"
+streetToponym.officialStreetName = "Roma"
+
+# Add to graph
+streetToponym.addToGraph(g)
+\end{lstlisting}
