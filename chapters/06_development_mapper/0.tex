@@ -3,7 +3,7 @@
 
 A fundamental part for providing \acl{LOD} on the Web is to build the \ac{RDF} Graph from the available data. The main obstacle in this project is the fact that different municipalities and public organizations may model the data in different ways, thus making the process of mapping the data into an \ac{RDF} Graph in accordance with the \ac{OntoIM} and OntoPiA ontologies difficult. The main idea, as shown in Figure \ref{fig:rdf-builder-architecture}, is to collect and process data from different sources: the city's CKAN portal, offline files, and Open Data published by state and regional agencies. Thus, two libraries were made in Python to simplify graph creation through object-oriented programming by converting ontology classes into Python classes, and related properties into attributes. This makes data entry from the various sources easier and code reading more understandable. Both the Python libraries and the \ac{RDF} Graph builder also make use of well-known libraries such as \verb#pandas# and \verb#rdflib# for data manipulation and reading, and graph creation and serialization. Finally, the sources of the various resources and other configurations are all defined in a single \verb#conf.ini# file to allow for better control and easier editing. An example of this file is shown in Code \ref{code:config-ini}.
 
-\begin{lstlisting}[caption={Example of a config.ini file that defines sources for some semantic areas.},label=code:config-ini]
+\begin{lstlisting}[language=bash,caption={Example of a config.ini file that defines sources for some semantic areas.},label=code:config-ini]
 [ANNCSU]
 streets = anncsu/streets.csv
 civics = anncsu/civics.csv
