@@ -1,0 +1,23 @@
+\section{Scope and organization of the thesis}
+\label{sec:thesis-organization}
+
+The goal of this thesis is to design and develop:
+
+\begin{enumerate}
+  \item The first version of the \ac{OntoIM} ontology;
+  \item Two Python libraries, \verb#ontoim-py# and \verb#ontopia-py# with the aim of simplifying the creation of the \ac{RDF} Graph;
+  \item A CKAN Open Data portal for publishing data on the web;
+  \item \textit{Data Reports}, a web application to publish reports with charts, tables, and maps using data obtained from the \ac{SPARQL} endpoint.
+\end{enumerate}
+
+The following chapters will focus on the various steps that were required to achieve these goals, in detail:
+
+\begin{description}
+  \item[Chapter \ref{chp:background}: Background] This chapter will present an introduction on the Semantic Web, \acl{LOD}, and its technologies such as \acs{RDF}, \acs{OWL}, serialization formats, and \acs{SPARQL}. This chapter will also introduce the tools used for developing the ontology, and managing and publishing the resources: Protégé, Virtuoso, and CKAN. Finally, the chapter will present OntoPiA, the Italian ontology that the OntoIM ontology imports and extends.
+  \item[Chapter \ref{chp:related}] This chapter presents the results of an analysis conducted on Italian, European and global cities regarding their approach to Open Data and in particular \acl{LOD}.
+  \item[Chapter \ref{chp:requirements}] This chapter will explain the ontology design approach, based on the analysis of data collected, from the analysis on data published by Italian cities, and from the needs and requirements of the Comune di Sona.
+  \item[Chapter \ref{chp:ontoim-description}] This chapter will elaborate on the approach followed to design the ontology, and will describe in details the main classes and properties contained in each of the semantic areas that compose the \ac{OntoIM} ontology.
+  \item[Chapter \ref{chp:rdf-builder}] This chapter covers the development of the Python libraries \verb#ontoim-py# and \verb#ontopia-py#, and the use of these libraries to create the \acs{RDF} Graph using examples with data collected and published by the Comune di Sona.
+  \item[Chapter \ref{chp:webapps}] This chapter will present the design and the development of the CKAN Open Data portal, and the \textit{Data Reports} web application.
+  \item[Chapter \ref{chp:conclusions}] This chapter presents the overall conclusions of the thesis, the results achieved, and the future developments of the project.
+\end{description}

@@ -9,12 +9,33 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{DEIThesis}[DEI Thesis Class]
 
+% -- OPTIONS --
+% Pass as option the sections you want to show in the thesis
 
+\newif\if@showwatermark\@showwatermarkfalse
+\newif\if@showdedication\@showdedicationfalse
+\newif\if@showfigures\@showfiguresfalse
+\newif\if@showtables\@showtablesfalse
+\newif\if@showalgorithms\@showalgorithmsfalse
+\newif\if@showcodes\@showcodesfalse
+\newif\if@showacronyms\@showacronymsfalse
+\newif\if@showacknowledgments\@showacknowledgmentsfalse
+
+\DeclareOption{watermark}{\@showwatermarktrue}
+\DeclareOption{dedication}{\@showdedicationtrue}
+\DeclareOption{figures}{\@showfigurestrue}
+\DeclareOption{tables}{\@showtablestrue}
+\DeclareOption{algorithms}{\@showalgorithmstrue}
+\DeclareOption{codes}{\@showcodestrue}
+\DeclareOption{acronyms}{\@showacronymstrue}
+\DeclareOption{acknowledgments}{\@showacknowledgmentstrue}
+
+\ProcessOptions\relax
 
 % -- GENERAL SETUP --
 
 % type
-\LoadClass[12pt, a4paper, twoside, openright]{book}
+\LoadClass[12pt,a4paper,twoside,openright]{book}
 
 % page geometry
 \RequirePackage[
@@ -271,7 +292,9 @@
   \def\acknowledgmentsname{Acknowledgments}
 
   % insert dedication page
-  \dedicationpage
+  \if@showdedication
+    \dedicationpage
+  \fi
 
   % insert abstract
   \abstractpage
@@ -281,35 +304,37 @@
   \cleardoublepage
 
   % insert list of figures
-  %\phantomsection
-  %\setcounter{page}{11}
-  \addcontentsline{toc}{chapter}{\listfigurename}
-  \listoffigures
-  \cleardoublepage
+  \if@showfigures
+    \listoffigures
+    \addcontentsline{toc}{chapter}{\listfigurename}
+    \cleardoublepage
+  \fi
 
   % insert list of tables
-  %\phantomsection
-  %\setcounter{page}{13}
-  \addcontentsline{toc}{chapter}{\listtablename}
-  \listoftables
-  \cleardoublepage
+  \if@showtables
+    \listoftables
+    \addcontentsline{toc}{chapter}{\listtablename}
+    \cleardoublepage
+  \fi
 
   % insert list of algorithms
-  %\phantomsection
-  %\setcounter{page}{15}
-  \addcontentsline{toc}{chapter}{\listalgorithmname}
-  \listofalgorithms
+  \if@showalgorithms
+    \listofalgorithms
+    \addcontentsline{toc}{chapter}{\listalgorithmname}
+    \cleardoublepage
+  \fi
 
   % insert list of code snippets
-  %\phantomsection
-  %\setcounter{page}{17}
-  \addcontentsline{toc}{chapter}{\lstlistlistingname}
-  \lstlistoflistings
-  \cleardoublepage
+  \if@showcodes
+    \lstlistoflistings
+    \addcontentsline{toc}{chapter}{\lstlistlistingname}
+    \cleardoublepage
+  \fi
 
   % insert list of abbreviations/acronyms
-  \setcounter{page}{19}
-  \acronyms
+  \if@showacronyms
+    \acronyms
+  \fi
 }
 
 
@@ -335,12 +360,14 @@
   \setlength{\headwidth}{\textwidth}
 
   % set watermark
-  \thiswatermark{
-    \centering
-    \put(-380,-700) {
-      \includegraphics[width=1.4\linewidth]{res/unipdbg}
+  \if@showwatermark
+    \thiswatermark{
+      \centering
+      \put(-380,-700) {
+        \includegraphics[width=1.4\linewidth]{res/unipdbg}
+      }
     }
-  }
+  \fi
 
   % set academic year in footer
   \cfoot{\normalsize\textsc{Academic Year \\ \@academicYear}}
@@ -498,13 +525,15 @@
   % add references
   \addcontentsline{toc}{chapter}{\bibname}
   \printbibliography
-  
-  \cleardoublepage
-  \phantomsection
 
-  % add acknowledgments
-  \addcontentsline{toc}{chapter}{\acknowledgmentsname}
-  \acknowledgments
+  \if@showacknowledgments
+    \cleardoublepage
+    \phantomsection
+
+    % add acknowledgments
+    \addcontentsline{toc}{chapter}{\acknowledgmentsname}
+    \acknowledgments
+  \fi
 }
 
 
