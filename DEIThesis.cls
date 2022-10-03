@@ -85,7 +85,7 @@
 \RequirePackage{amsmath}
 
 % links
-\RequirePackage{hyperref}
+\RequirePackage[pdfa]{hyperref}
 \RequirePackage{url}
 
 % colors
